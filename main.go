@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/juankis/apiItems/controllers"
 )
 
 func main() {
@@ -17,12 +18,18 @@ func main() {
 		c.Writer.Header().Add("Access-Control-Allow-Origin", "*")
 		c.Next()
 		title := c.PostForm("title")
-		moverArchivo(c)
-
+		description := c.PostForm("description")
+		picture := moverArchivo(c)
+		controllers.SaveItem(title, description, picture)
 		fmt.Printf("title: %s;", title)
 		c.JSON(200, gin.H{
 			"status": "posted",
 			"title":  title,
+		})
+	})
+	router.GET("/get_items", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"items": controllers.GetItems(),
 		})
 	})
 	router.Run(":9000")
