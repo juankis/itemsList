@@ -7,12 +7,11 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/juankis/apiItems/src/controllers"
+	"github.com/juankis/apiItems/controllers"
 )
 
 func main() {
 	router := gin.Default()
-	router.MaxMultipartMemory = 8 << 20 // 8 MiB
 
 	router.POST("/form_post", func(c *gin.Context) {
 		// add header Access-Control-Allow-Origin
@@ -34,23 +33,17 @@ func main() {
 			"items": controllers.GetItems(),
 		})
 	})
-	router.Static("/public/js", "./public/js")
-	router.LoadHTMLGlob("public/*.html")
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", nil)
-	})
-
 	router.Run(":9000")
 }
 
 func moverArchivo(c *gin.Context) string {
-	path := "./pictures/"
+	path := "../../public/pictures/"
 	file, err := c.FormFile("picture")
 	if err != nil {
 		c.String(http.StatusBadRequest, fmt.Sprintf("get form err: %s", err.Error()))
 	}
-	nameFile := path + strconv.Itoa(rand.Intn(10000)) + "_" + file.Filename
-	if err := c.SaveUploadedFile(file, nameFile); err != nil {
+	nameFile := strconv.Itoa(rand.Intn(10000)) + "_" + file.Filename
+	if err := c.SaveUploadedFile(file, path+nameFile); err != nil {
 		c.String(http.StatusBadRequest, fmt.Sprintf("upload file err: %s", err.Error()))
 	}
 	c.String(http.StatusOK, fmt.Sprintf("El archivo %s ha sido trasladado con exito", file.Filename))
