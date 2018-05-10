@@ -1,0 +1,8 @@
+.container-img {
+    width: 300px;
+  }
+  
+  .container-img img {
+    max-height: 100%;
+    max-width: 100%;
+  }

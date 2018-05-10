@@ -20,7 +20,7 @@ $(document).ready(function () {
 
     createItem = (picture, description, title, updated_at) => {
         return '<div class="card">'+
-                    '<img class="card-img-top" src=http://localhost:9000/"'+picture+'" alt="Card image cap">'+
+                    '<img class="card-img-top" src=http://localhost:9000/pictures/'+picture+' alt="Card image cap">'+
                     '<div class="card-body">'+
                     '<h4 class="card-title">'+title+'</h4>'+
                     '<p class="card-text">'+description+'</p>'+

@@ -35,6 +35,8 @@ func main() {
 		})
 	})
 	router.Static("/public/js", "./public/js")
+	router.Static("/public/styles", "./public/styles")
+	router.Static("/pictures", "./pictures")
 	router.LoadHTMLGlob("public/*.html")
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
@@ -49,8 +51,8 @@ func moverArchivo(c *gin.Context) string {
 	if err != nil {
 		c.String(http.StatusBadRequest, fmt.Sprintf("get form err: %s", err.Error()))
 	}
-	nameFile := path + strconv.Itoa(rand.Intn(10000)) + "_" + file.Filename
-	if err := c.SaveUploadedFile(file, nameFile); err != nil {
+	nameFile := strconv.Itoa(rand.Intn(10000)) + "_" + file.Filename
+	if err := c.SaveUploadedFile(file, path+nameFile); err != nil {
 		c.String(http.StatusBadRequest, fmt.Sprintf("upload file err: %s", err.Error()))
 	}
 	c.String(http.StatusOK, fmt.Sprintf("El archivo %s ha sido trasladado con exito", file.Filename))
