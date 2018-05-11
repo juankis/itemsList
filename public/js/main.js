@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+    var items
+
     initialFunctions = () => {
         $("#itemsList").sortable();
         $("#itemsList").disableSelection();
@@ -10,7 +13,8 @@ $(document).ready(function () {
             type: 'GET',
             success: function (data) {
                 console.log(data)
-                fillItems(data.items)
+                items = data.items
+                fillItems(items)
             },
             cache: false,
             contentType: false,
@@ -18,7 +22,7 @@ $(document).ready(function () {
         });
     }
 
-    createItem = (picture, description, title, updated_at) => {
+    createItem = (id,picture, description, title, updated_at) => {
         return '<div class="card">'+
                     '<img class="card-img-top" src=http://localhost:9000/pictures/'+picture+' alt="Card image cap">'+
                     '<div class="card-body">'+
@@ -26,6 +30,8 @@ $(document).ready(function () {
                     '<p class="card-text">'+description+'</p>'+
                     '<p class="card-text">'+
                     '<small class="text-muted">'+updated_at+'</small>'+
+                    '<button type="button" onclick="fillItem('+id+')" class="btn btn-link btn-sm">Edit</button>'+
+                    '<button type="button" onclick="deleteItem('+id+')" class="btn btn-link btn-sm">Delete</button>'+
                     '</p>'+
                     '</div>'+
                 '</div>'
@@ -57,9 +63,9 @@ $(document).ready(function () {
 
     fillItems = (items) =>{
         $("#itemsList").empty();
-        console.log("clear")
         items.forEach(item => {
-            $("#itemsList").append(createItem(item.Picture, 
+            $("#itemsList").append(createItem(item.Id, 
+                                              item.Picture, 
                                               item.Description,
                                               item.Title,
                                               "texto" 
@@ -68,6 +74,51 @@ $(document).ready(function () {
         $("#totalItems").html(items.length);
     }
     
+    deleteItem = (id) =>  {
+        $.ajax({
+            url: "http://localhost:9000/delete_item",
+            type: 'POST',
+            success: function (data) {
+                fillItems(data.items)
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    }
+
+    edit = (id) =>  {
+        $.ajax({
+            url: "http://localhost:9000/edit_item",
+            type: 'POST',
+            success: function (data) {
+                console.log(data)
+                fillItems(data.items)
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    }
+
+    fillItem = (id) => {
+        $('#buttonModal').click()
+        item = getItem(id)
+        console.log(item)
+        $("#title").val(item.Title)
+        $("#description").val(item.Description)
+        //$("#picture").val(item.Picture)   
+    }
+  
+    getItem = (id) => {
+        for (var i = 0; i < items.length; i++){
+            if (items[i].Id == id){
+               return items[i]
+            }
+        }
+        return null
+    }
+
     initialFunctions()
     updateItems()
 });
