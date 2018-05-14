@@ -34,6 +34,16 @@ func main() {
 			"items": controllers.GetItems(),
 		})
 	})
+
+	router.GET("/delete_item", func(c *gin.Context) {
+		c.Writer.Header().Add("Access-Control-Allow-Origin", "*")
+		msj, err := controllers.DeleteItem(c.Query("id"))
+		c.JSON(200, gin.H{
+			"response": msj,
+			"error":    err,
+		})
+	})
+
 	router.Static("/public/js", "./public/js")
 	router.Static("/public/styles", "./public/styles")
 	router.Static("/pictures", "./pictures")

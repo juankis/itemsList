@@ -76,10 +76,11 @@ $(document).ready(function () {
     
     deleteItem = (id) =>  {
         $.ajax({
-            url: "http://localhost:9000/delete_item",
-            type: 'POST',
+            url: "http://localhost:9000/delete_item?id="+id,
+            type: 'GET',
             success: function (data) {
-                fillItems(data.items)
+                console.log(data)
+                updateItems()
             },
             cache: false,
             contentType: false,

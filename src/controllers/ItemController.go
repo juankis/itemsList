@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"strconv"
+
 	"github.com/juankis/apiItems/src/db"
 	"github.com/juankis/apiItems/src/models"
 )
@@ -15,6 +17,21 @@ func SaveItem(title string, description string, picture string) string {
 	} else {
 		return "1"
 	}
+}
+
+func DeleteItem(id string) (string, error) {
+	db := db.Connect()
+	defer db.Close()
+	id_, err := strconv.Atoi(id)
+	if err != nil {
+		return err.Error(), err
+	}
+	item := &models.Item{Id: id_}
+	err = db.Delete(item)
+	if err != nil {
+		return err.Error(), err
+	}
+	return "operacion exitosa", nil
 }
 
 func GetItems() []models.Item {
