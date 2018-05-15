@@ -44,6 +44,8 @@ func main() {
 		})
 	})
 
+	router.POST("/edit_item", handleEditItem)
+
 	router.Static("/public/js", "./public/js")
 	router.Static("/public/styles", "./public/styles")
 	router.Static("/pictures", "./pictures")
@@ -67,4 +69,21 @@ func moverArchivo(c *gin.Context) string {
 	}
 	c.String(http.StatusOK, fmt.Sprintf("El archivo %s ha sido trasladado con exito", file.Filename))
 	return nameFile
+}
+
+func handleEditItem(c *gin.Context) {
+	c.Writer.Header().Add("Access-Control-Allow-Origin", "*")
+	c.Next()
+	id := c.PostForm("id")
+	title := c.PostForm("title")
+	description := c.PostForm("description")
+	//picture := moverArchivo(c)
+	msj, err := controllers.EditItem(id, title, description, "picture")
+	fmt.Printf("title: %s;", title)
+	c.JSON(200, gin.H{
+		"status": "posted",
+		"title":  title,
+		"msj":    msj,
+		"err":    err,
+	})
 }

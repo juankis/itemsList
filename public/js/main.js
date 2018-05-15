@@ -89,6 +89,11 @@ $(document).ready(function () {
     }
 
     edit = (id) =>  {
+        if(!$('form').valid())
+        return false
+        var form = $('form')[0];  
+        var formData = new FormData(form);
+        formData.append("id", id);
         $.ajax({
             url: "http://localhost:9000/edit_item",
             type: 'POST',
@@ -108,6 +113,7 @@ $(document).ready(function () {
         console.log(item)
         $("#title").val(item.Title)
         $("#description").val(item.Description)
+        $( "#buttonSaveOrEdit" ).attr('onclick', 'edit('+id+')')
         //$("#picture").val(item.Picture)   
     }
   

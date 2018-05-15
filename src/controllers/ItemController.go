@@ -34,6 +34,25 @@ func DeleteItem(id string) (string, error) {
 	return "operacion exitosa", nil
 }
 
+func EditItem(id string, title string, description string, picture string) (string, error) {
+	db := db.Connect()
+	defer db.Close()
+	id_, err := strconv.Atoi(id)
+	if err != nil {
+		return err.Error(), err
+	}
+	item := models.Item{
+		Id:          id_,
+		Title:       title,
+		Description: description,
+	}
+	_, err = db.Model(item).Column("title", "description").Update()
+	if err != nil {
+		return err.Error(), err
+	}
+	return "operacion exitosa", nil
+}
+
 func GetItems() []models.Item {
 	db := db.Connect()
 	defer db.Close()
