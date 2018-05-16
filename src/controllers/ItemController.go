@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/juankis/itemsList/src/db"
@@ -67,4 +68,30 @@ func GetItems() []models.Item {
 		return items
 	}
 	return items
+}
+
+//SavePosition update position
+func SavePosition(idItem string, positionItem string) (string, error) {
+	db := db.Connect()
+	defer db.Close()
+	id, err := stringToInt(idItem)
+	position, err := stringToInt(positionItem)
+	fmt.Printf("id:%s position:%s", idItem, positionItem)
+	item := models.Item{
+		Id:       id,
+		Position: position,
+	}
+	err = db.Update(&item)
+	if err != nil {
+		return err.Error(), err
+	}
+	return "operacion exitosa", nil
+}
+
+func stringToInt(entero string) (int, error) {
+	numero, err := strconv.Atoi(entero)
+	if err != nil {
+		return 0, err
+	}
+	return numero, nil
 }

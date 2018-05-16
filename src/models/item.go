@@ -6,4 +6,5 @@ type Item struct {
 	Title       string
 	Description string
 	Picture     string
+	Position    int
 }

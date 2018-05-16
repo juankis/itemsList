@@ -134,25 +134,23 @@ $(document).ready(function () {
     }
 
     savePositions = () => {
-        var arrayItems = {"items":[]} 
-        
         $( ".card" ).each(function( index ) {            
-             item = {"item":$( this ).attr('id'), "position":index}
-             arrayItems.items.push(item)
+             $.ajax({
+                url: "http://localhost:9000/save_position",
+                crossDomain: true,
+                type: "POST",
+                data: {
+                    id : $( this ).attr('id'),
+                    position : index
+                },
+                success: function (data) {
+                    console.log(data)
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
           });
-        console.log(arrayItems)  
-        $.ajax({
-            url: "http://localhost:9000/save_positions",
-            crossDomain: true,
-            dataType: "json",
-            data: arrayItems,
-            success: function (data) {
-                console.log(data)
-            },
-            cache: false,
-            contentType: false,
-            processData: false
-        });
     }
 
     newItem = () => {
@@ -160,7 +158,7 @@ $(document).ready(function () {
         $("#buttonSaveOrEdit").attr('onclick', 'saveForm()')
     }
 
-    $( ".selector" ).on( "sortchange", function( event, ui ) {
+    $( ".card-columns" ).on( "sortchange", function( event, ui ) {
         savePositions()
     } );
 
