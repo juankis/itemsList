@@ -91,13 +91,10 @@ $(document).ready(function () {
     edit = (id) =>  {
         if(!$('form').valid())
         return false
-        console.log("form")
         var form = $('form')[0];  
-        console.log(form)
         var formData = new FormData(form);
         formData.append("id", id);
         
-        console.log(formData)
         $.ajax({
             url: "http://localhost:9000/edit_item",
             crossDomain: true,
@@ -109,6 +106,9 @@ $(document).ready(function () {
                 $("#buttonCloseModal").click()
                 updateItems()
             },
+            complete: function(data) {
+                $( "#buttonSaveOrEdit" ).attr('onclick', 'saveForm()')
+            },
             cache: false,
             contentType: false,
             processData: false
@@ -118,7 +118,6 @@ $(document).ready(function () {
     fillItem = (id) => {
         $('#buttonModal').click()
         item = getItem(id)
-        console.log(item)
         $("#title").val(item.Title)
         $("#description").val(item.Description)
         $( "#buttonSaveOrEdit" ).attr('onclick', 'edit('+id+')')
@@ -132,6 +131,11 @@ $(document).ready(function () {
             }
         }
         return null
+    }
+
+    newItem = () => {
+        $("#buttonModal").click()
+        $("#buttonSaveOrEdit").attr('onclick', 'saveForm()')
     }
 
     initialFunctions()

@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/juankis/apiItems/src/controllers"
@@ -62,11 +63,12 @@ func moverArchivo(c *gin.Context) string {
 	if err != nil {
 		c.String(http.StatusBadRequest, fmt.Sprintf("get form err: %s", err.Error()))
 	}
-	nameFile := strconv.Itoa(rand.Intn(10000)) + "_" + file.Filename
+	filename := strings.Replace(file.Filename, " ", "", -1)
+	nameFile := strconv.Itoa(rand.Intn(10000)) + "_" + filename
 	if err := c.SaveUploadedFile(file, path+nameFile); err != nil {
 		c.String(http.StatusBadRequest, fmt.Sprintf("upload file err: %s", err.Error()))
 	}
-	c.String(http.StatusOK, fmt.Sprintf("El archivo %s ha sido trasladado con exito", file.Filename))
+	c.String(http.StatusOK, fmt.Sprintf("El archivo %s ha sido trasladado con exito", filename))
 	return nameFile
 }
 
