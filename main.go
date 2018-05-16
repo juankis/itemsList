@@ -30,6 +30,7 @@ func main() {
 		})
 	})
 	router.POST("/edit_item", handleEditItem)
+	router.POST("/save_positions", handleSavePositions)
 	router.GET("/get_items", func(c *gin.Context) {
 		c.Writer.Header().Add("Access-Control-Allow-Origin", "*")
 		c.JSON(200, gin.H{
@@ -86,5 +87,13 @@ func handleEditItem(c *gin.Context) {
 		"title":  title,
 		"msj":    msj,
 		"err":    err,
+	})
+}
+
+func handleSavePositions(c *gin.Context) {
+	name := c.Param("items")
+	c.JSON(200, gin.H{
+		"status": "posted",
+		"title":  name,
 	})
 }

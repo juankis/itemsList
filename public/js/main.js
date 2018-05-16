@@ -23,7 +23,7 @@ $(document).ready(function () {
     }
 
     createItem = (id,picture, description, title, updated_at) => {
-        return '<div class="card">'+
+        return '<div class="card" id="'+id+'" >'+
                     '<img class="card-img-top img-fluid" src=http://localhost:9000/pictures/'+picture+' alt="Card image cap">'+
                     '<div class="card-body">'+
                     '<h4 class="card-title">'+title+'</h4>'+
@@ -133,10 +133,36 @@ $(document).ready(function () {
         return null
     }
 
+    savePositions = () => {
+        var arrayItems = {"items":[]} 
+        
+        $( ".card" ).each(function( index ) {            
+             item = {"item":$( this ).attr('id'), "position":index}
+             arrayItems.items.push(item)
+          });
+        console.log(arrayItems)  
+        $.ajax({
+            url: "http://localhost:9000/save_positions",
+            crossDomain: true,
+            dataType: "json",
+            data: arrayItems,
+            success: function (data) {
+                console.log(data)
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    }
+
     newItem = () => {
         $("#buttonModal").click()
         $("#buttonSaveOrEdit").attr('onclick', 'saveForm()')
     }
+
+    $( ".selector" ).on( "sortchange", function( event, ui ) {
+        savePositions()
+    } );
 
     initialFunctions()
     updateItems()
