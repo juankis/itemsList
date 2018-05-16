@@ -21,3 +21,7 @@ body {
   text-align: center;
   text-shadow: 0 .05rem .1rem rgba(0,0,0,.5);
 }
+.img-fluid {
+  max-width: 320px;
+  height: 320px;
+}
