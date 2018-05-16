@@ -10,4 +10,4 @@ GO, JQuery, Javascript
 - create database postgresql, and restores backup from sql/items.backup and configure conexion in src/db/db.go
 
 # Run 
-- go run main.go
+- go run main.go and go to http://localhost:9000
