@@ -28,6 +28,7 @@ func main() {
 			"title":  title,
 		})
 	})
+	router.POST("/edit_item", handleEditItem)
 	router.GET("/get_items", func(c *gin.Context) {
 		c.Writer.Header().Add("Access-Control-Allow-Origin", "*")
 		c.JSON(200, gin.H{
@@ -43,8 +44,6 @@ func main() {
 			"error":    err,
 		})
 	})
-
-	router.POST("/edit_item", handleEditItem)
 
 	router.Static("/public/js", "./public/js")
 	router.Static("/public/styles", "./public/styles")
@@ -77,9 +76,9 @@ func handleEditItem(c *gin.Context) {
 	id := c.PostForm("id")
 	title := c.PostForm("title")
 	description := c.PostForm("description")
-	//picture := moverArchivo(c)
-	msj, err := controllers.EditItem(id, title, description, "picture")
-	fmt.Printf("title: %s;", title)
+	picture := moverArchivo(c)
+	msj, err := controllers.EditItem(id, title, description, picture)
+
 	c.JSON(200, gin.H{
 		"status": "posted",
 		"title":  title,

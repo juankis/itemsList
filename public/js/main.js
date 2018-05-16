@@ -43,7 +43,7 @@ $(document).ready(function () {
             return false
         var form = $('form')[0];  
         var formData = new FormData(form);
-
+        console.log(formData)
         $.ajax({
             url: "http://localhost:9000/form_post",
             crossDomain: true,
@@ -91,15 +91,23 @@ $(document).ready(function () {
     edit = (id) =>  {
         if(!$('form').valid())
         return false
+        console.log("form")
         var form = $('form')[0];  
+        console.log(form)
         var formData = new FormData(form);
         formData.append("id", id);
+        
+        console.log(formData)
         $.ajax({
             url: "http://localhost:9000/edit_item",
+            crossDomain: true,
             type: 'POST',
+            data: formData,
             success: function (data) {
                 console.log(data)
-                fillItems(data.items)
+                $('form')[0].reset()
+                $("#buttonCloseModal").click()
+                updateItems()
             },
             cache: false,
             contentType: false,

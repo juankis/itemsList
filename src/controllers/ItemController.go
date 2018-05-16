@@ -45,8 +45,9 @@ func EditItem(id string, title string, description string, picture string) (stri
 		Id:          id_,
 		Title:       title,
 		Description: description,
+		Picture:     picture,
 	}
-	_, err = db.Model(item).Column("title", "description").Update()
+	err = db.Update(&item)
 	if err != nil {
 		return err.Error(), err
 	}
