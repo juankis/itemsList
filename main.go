@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/juankis/apiItems/src/controllers"
+	"github.com/juankis/itemsList/src/controllers"
 )
 
 func main() {
@@ -22,11 +22,11 @@ func main() {
 		title := c.PostForm("title")
 		description := c.PostForm("description")
 		picture := moverArchivo(c)
-		controllers.SaveItem(title, description, picture)
+		msj, err := controllers.SaveItem(title, description, picture)
 		fmt.Printf("title: %s;", title)
 		c.JSON(200, gin.H{
-			"status": "posted",
-			"title":  title,
+			"status": msj,
+			"error":  err,
 		})
 	})
 	router.POST("/edit_item", handleEditItem)
